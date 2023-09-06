@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Banking service application
 
 on:
   push:
@@ -35,6 +35,6 @@ jobs:
       - name: Create Pull Request to Develop
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
           branch: develop
           base: develop
