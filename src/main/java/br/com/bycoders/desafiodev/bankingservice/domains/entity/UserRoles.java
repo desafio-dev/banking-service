@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserRoles {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
     private Long id;
     private String name;
