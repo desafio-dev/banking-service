@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +46,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(cors -> cors.disable())
+        httpSecurity
+                .cors((cors) -> initiateCors(httpSecurity, cors))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
                     authorize
                             .requestMatchers(HttpMethod.POST, "/users", "/login").permitAll()
@@ -54,6 +58,14 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
+    }
+
+    private static void initiateCors(HttpSecurity httpSecurity, CorsConfigurer<HttpSecurity> cors) {
+        try {
+            cors.init(httpSecurity);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Bean
