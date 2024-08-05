@@ -34,13 +34,9 @@ public class UploadFileServiceImpl implements UploadFileService {
         Map<Owner, List<Transactions>> transactions = ProcessorCNABHelper.interpreteFile(cnabFile);
 
         transactions
-                .entrySet()
-                .forEach(entry -> {
+                .forEach((owner, transactionsList) -> {
 
-                    Owner owner = entry.getKey();
-                    List<Transactions> transactionsList = entry.getValue();
                     Owner ownerFound = ownerRepository.findByCpf(owner.getCpf());
-
 
 
                     if (Objects.nonNull(ownerFound)) {

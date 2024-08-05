@@ -49,11 +49,10 @@ public class SecurityConfig {
         httpSecurity
                 .cors((cors) -> initiateCors(httpSecurity, cors))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> {
-                    authorize
+                .authorizeHttpRequests(authorize ->
+                        authorize
                             .requestMatchers(HttpMethod.POST, "/users", "/login").permitAll()
-                            .anyRequest().authenticated();
-                })
+                            .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
